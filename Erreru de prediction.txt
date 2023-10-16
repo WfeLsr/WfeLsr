@@ -1,0 +1,18 @@
+N=length(y);
+% ye=zeros(1,50);
+ye=zeros(1,1000);
+ye(1)=0;
+ye(2)=-a1(2)*y(1);
+ye(3)=-a1(2)*y(2)-a1(3)*y(1);
+ye(4)=-a1(2)*y(3)-a1(3)*y(2)-a1(4)*y(1);
+for k=5:N
+ ye(k)=-a1(2)*y(k-1)-a1(3)*y(k-2)-a1(4)*y(k-3)-a1(5)*y(k-4);
+end
+erreur=y-ye;
+figure
+ff1=abs(fft(erreur));
+plot(ff1)
+title('  Erreur de prédiction : ')
+xlabel(' Frequences')
+ylabel(' e')
+grid on

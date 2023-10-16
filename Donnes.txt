@@ -1,0 +1,31 @@
+
+Sur l'ordre:
+
+Jusqu’à présent, nous avons supposé que l’ordre du modèle AR est connu. Cependant, en pratique,
+cette quantité est généralement inconnue, et on cherche alors à estimer sa valeur à partir des
+observations, ce qu’on appelle généralement le problème de la sélection de modèle.
+Différents critères permettent de déterminer l'ordre p optimal à partir du signal à
+modéliser, tels le FPE (Final Prediction Error), l'AIC (Information Theoretic Criterion) et le
+BIC (modified AIC) proposés par Akaike,
+
+
+Prediction FPE :
+Les étapes de l'algorithme sont les suivantes :
+- On détermine le modèle paramétrique (AR) de l'ondelette.
+- On prédit alors le signal de synthèse correspondant au modèle trouvé.
+- On calcule alors l'écart entre le signal réel et le signal de synthèse, qui représente ce
+que l'on appelle, l'erreur de prédiction linéaire.
+En tenant compte des hypothèses faites, nous obtenons :
+P-I
+fciH-d = Z
+i=0
+où d désigne la distance de prédiction, p l'ordre du modèle et o une séquence blanche,
+gaussienne décorrélée de h. Si d est choisi égal à 1, l'algorithme permettra d'améliorer la
+résolution de chaque écho pouvant être modélisé par le processus AR. Si, en revanche, d est
+choisi plus grand, par exemple égal à la distance séparant deux échos de fond, l'algorithme
+éliminera en partie la seconde réflexion, ainsi que les suivantes, sans améliorer la résolution du
+premier écho. Différents critères permettent de déterminer l'ordre p optimal à partir du signal à
+modéliser, tels le FPE (Final Prediction Error), l'AIC (Information Theoretic Criterion) et le
+BIC (modified AIC) proposés par Akaike, le MDL (Mininum Description Length) [7]. Le
+choix de l'ordre dépendant avant tout des données, certains critères seront plus ou moins
+performants suivant la nature de celles-ci.

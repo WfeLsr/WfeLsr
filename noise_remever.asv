@@ -1,0 +1,107 @@
+close all;
+clear;
+Fe=100;
+y=load('sujet4.txt');
+N=length(y);
+n=1:N
+figure
+grid on
+subplot(311);
+plot(y,'g');
+xlabel('signal reelle')
+% axis([0 14000 -2000000 2000000]);
+r=autocorr(y);
+% M=12;
+% [a1,e]=levinson(r,M);
+% ye=zeros(N,1);
+% for n=1:N
+%  if n<M+1    
+%    for m=1:n-1
+%       ye(n)=ye(n)-a1(m+1)*y(n-m);
+%    end 
+%  else   
+%    for m=1:M
+%       ye(n)=ye(n)-a1(m+1)*y(n-m);
+%    end
+%  end  
+% end
+
+
+
+
+
+
+
+
+figure;
+order=4:2:12
+for i=1:length(order)
+
+ya=zeros(N/10,10);
+pas=N/10;
+for(r=pas:pas:N);
+    x=y(r-pas+1:r);
+    [a1,e]=levinson(r,order(i));
+     ye=zeros(N,1);
+   for n=1:N
+     if n<order(i)+1    
+      for m=1:n-1
+        ye(n)=ye(n)-a1(m+1)*y(n-m);
+   end 
+ else   
+   for m=1:order(i)
+      ye(n)=ye(n)-a1(m+1)*y(n-m);
+   end
+ end  
+end
+
+    ya(:,r/pas)=ye(:,r/pas);
+end
+FPE(i)=e*(N+order(i))/(N-order(i)-1);
+title('FPE');
+plot(FPE);
+end
+
+
+% EPS=y-ye;
+% grid on
+% subplot(313);
+% grid on
+% plot(EPS)
+% xlabel('signal erreur')
+% axis([0 18000 -60000 60000]);
+% hold on;
+% 
+% K=N/263;
+% W=zeros(K,100);
+% b=1;
+% c=1;
+% for i=1:N;
+%     W(b,c)=y(i);
+%        if b==K
+%            b=0;
+%            c=c+1;
+%        end
+%  b=b+1;      
+% end
+% 
+% pas=N/263;
+% x=y.';
+% x1=x(1:pas);
+% mu=0.005;
+% X=x1(1:length(x1)-M);
+% xr=x1(M+1:length(x1));
+% N=length(X);
+% h=zeros(N+1,M);
+% e(M)=0;
+% for i=M+1:N
+%     ye(i)=0;
+%     for j=1:M
+%         ye(i)=ye(i)+h(i,j)'*X(1,i-j+1);
+%         h(i+1,j)=h(i,j)+mu*e(i-1)*X(1,i-j+1);
+%     end
+%   e(i)=xr(1,i)-ye(i); 
+% end 
+% figure
+% plot(h)
+% 

@@ -1,0 +1,74 @@
+n=0:1/100:2*pi;
+v=cos(n)+i*sin(n);
+plot(v,'b')
+hold on 
+grid on
+Z1=0.99*exp(0.2*pi*i);
+Z2=0.99*exp(-0.2*pi*i);
+Z3=0.99*exp(0.4*pi*i);
+Z4=0.99*exp(-0.4*pi*i);
+plot(Z1,'*');
+plot(Z2,'*');
+plot(Z3,'*');
+plot(Z4,'*');
+m=[(1/Z1) ((1/Z1).^2) ((1/Z1).^3) ((1/Z1).^4);(1/Z2) ((1/Z2).^2) ((1/Z2).^3) ((1/Z2).^4);(1/Z3) ((1/Z3).^2) ((1/Z3).^3) ((1/Z3).^4);(1/Z4) ((1/Z4).^2) ((1/Z4).^3) ((1/Z4).^4)];
+a=inv(m)*[-1;-1;-1;-1];
+N=1000;
+b=randn(1,N);
+y=zeros(1,N);
+for k=1:N;
+    if k<5
+        som=0;
+      for m=1:k-1 
+      som=som-a(m)*y(k-m);
+      end
+    else
+        som=0;
+        for m=1:4  
+        som=som-a(m)*y(k-m);
+        end
+    end
+   y(k)=b(k)+som;
+end
+signale=y(N-49:N);
+tf=abs(fft(signale));
+figure;
+w=1:N;
+plot(w(1:25),tf(1:25));
+figure
+r=autocorr(y);
+ft1=abs(fft(r));
+plot(ft1)
+[a1,e]=levinson(r,4);
+Ne=N/2;
+S=zeros(1,Ne);
+for m=1:Ne
+    som=1;
+    for j=1:4
+        som=som+a(j)*exp(1i*(2*pi/Ne)*m);
+    end
+    S(m)=e/(som*conj(som));
+end
+figure 
+plot(S,'g');
+ye=zeros(1,4);
+ye(1)=0;
+ye(2)=-a1(2)*y(1);
+ye(3)=-a1(2)*y(2)-a1(3)*y(1);
+ye(4)=-a1(2)*y(3)-a1(3)*y(2)-a1(4)*y(1);
+for k=5:N
+ ye(k)=-a1(2)*y(k-1)-a1(3)*y(k-2)-a1(4)*y(k-3)-a1(5)*y(k-4);
+end
+erreur=y-ye;
+figure
+ff1=abs(fft(erreur));
+plot(ff1)
+r1=autocorr(erreur);
+r2=autocorr(b);
+ff2=abs(fft(r1));
+ff3=abs(fft(r2));
+figure
+subplot(211)
+plot(ff2,'r')
+subplot(212)
+plot(ff3,'g')
